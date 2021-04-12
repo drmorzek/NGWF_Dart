@@ -1,0 +1,18 @@
+targets:
+  $default:
+    builders:
+      sass_builder:
+        release_options:
+          outputStyle: compressed
+      build_web_compilers:entrypoint:
+        options:
+          compiler: dart2js
+        dev_options:
+          dart2js_args:
+          - --no-minify
+          # - echo "server run"
+        release_options:
+          dart2js_args:
+          - --minify
+          - -O4
+          - --no-source-maps
