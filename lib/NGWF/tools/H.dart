@@ -91,12 +91,16 @@ class _HmodelParent {
     return this;
   }
 
+  Remove() {
+    this._model.remove();
+    return this;
+  }
+
   RewriteAll(String selector) {
     this._selector = selector;
     var node = querySelectorAll(this._selector);
-    
+
     node.forEach((element) {
-      
       this._RewriteNode(element, this._model);
     });
     return this;

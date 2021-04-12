@@ -5,10 +5,10 @@ import 'package:NGWF/NGWF/core.dart';
 class TestDirective extends NGWFDirective {
   TestDirective() : super(name: 'ffff');
   setup() {
-    setFunction((arg, node, G) {
+    // setFunction((arg, node, G) {
       // print(arg);
       // print(node);
       // print(G);
-    });
+    // });
   }
 }

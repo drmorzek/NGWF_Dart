@@ -10,8 +10,9 @@ class AppRouter extends NGWFRouter {
   routes: {
       "/input": InputComponent(),
       "/directive": DirectiveComponent(),
+      "/directive/:id": DirectiveComponent(),
       "**": Page404Component(),
-      "#": HomePageComponent(),
+      "/": HomePageComponent(),
     }  
   );
 }

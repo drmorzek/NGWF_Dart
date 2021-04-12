@@ -11,31 +11,48 @@ class NGWFComponent {
   String tag;
   String name;
   Map _data;
+  var _stylesnode;
   Map P = {};
   Map _components = new Map();
+  String styles;
   Map pipes;
   Map props = new Map();
-  var router;
   EventEmitter _event;
+  _RouteSettings route;
 
   NGWFComponent(
       {this.template,
       this.tag,
       data,
-      router,
       components,
       this.name,
       plugins,
+      styles,
       directives}) {
+    this.route = _RouteSettings();
     this.P = plugins ?? {};
     this._data = data;
     this._event = EventEmitter();
-    this.router = router;
     this.setComponents(components);
+    this.setStyles(styles);
   }
 
   setCtx(ctx) {
     this.G = ctx;
+    return this;
+  }
+
+  setStyles(styles) {
+    this.styles = styles ?? "";
+    this._stylesnode = querySelector("style[name='${this.tag}']");
+    if(this._stylesnode == null) {
+      H
+        .node(H.h(
+            tag: "style",
+            params: {"type": "text/css", "name": tag},
+            child: [this.styles]))
+        .Append("head");
+    }
     return this;
   }
 
@@ -46,10 +63,6 @@ class NGWFComponent {
 
   setTemplate(template) {
     this.template = template;
-  }
-
-  setRouter(router) {
-    this.router = router;
   }
 
   setTag(tag) {
@@ -65,6 +78,7 @@ class NGWFComponent {
       components.forEach((element) {
         this._components[element.runtimeType] = element;
       });
+    return this;
   }
 
   setPipes(Map pipes) {
@@ -93,6 +107,11 @@ class NGWFComponent {
   _init() {
     if (this.name != null) this._subscribeProps(this.name);
     this._subscribeProps(this.runtimeType);
+
+    
+    window.addEventListener('popstate', (event) async {
+      querySelector("style[name='${this.tag}']");
+    });
   }
 
   render() async {
@@ -107,25 +126,15 @@ class NGWFComponent {
 
     await H.node(this.template).Push(this.tag);
 
-    this.G.event.emit('renderpage', this);
-
     if (this._components != null) {
-      await this._components.forEach((_, c) async {
+      this._components.forEach((_, c) async {
         var component = c();
         component.setCtx(this.G);
         component.setPlugins(this.P);
         await component.render();
       });
     }
-
-    this.G.components = {...this.G.components, ...this._components};
-
-    if (this.router != null) {
-      this.router.setCtx(this.G).init();
-      window.addEventListener('popstate', (event) async {
-        this.router.setCtx(this.G).init();
-      });
-    }
+    this.G.event.emit('renderpage', this);
 
     if (this.afterMount != null) await this.afterMount();
     return this.template;
@@ -136,4 +145,14 @@ class NGWFComponent {
   }
 
   call() => this;
+}
+
+class _RouteSettings {
+  Map params;
+
+  _RouteSettings() {}
+
+  go(url) {
+    window.location.href = "#$url";
+  }
 }

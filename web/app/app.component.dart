@@ -1,6 +1,6 @@
 import 'package:NGWF/NGWF/core.dart';
 
-import 'app.routes.dart';
+import 'app.styles.dart';
 import 'app.template.dart';
 
 import 'layouts/navbar/navbar.component.dart';
@@ -10,6 +10,8 @@ class AppComponent extends NGWFComponent {
       : super(
             tag: 'app-root',
             template: apptemplate,
-            router: AppRouter(),
-            components: [NavbarComponent()]);
+            components: [NavbarComponent()],
+            styles: appstyles
+      );
 }
+

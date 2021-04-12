@@ -29,7 +29,7 @@ main(List<String> args) async {
           .replaceAll("\\$fileName", '');
       var fileNameArr = fileName.split('.');
       var ext = fileNameArr.removeLast();
-      if (ext == "html") {
+      if (ext == "html" || ext == "css") {
         // ext = ext == "html" ? "dart"
         var oldfileName = fileNameArr.join(".") + ".$ext";
         var oldfilePath = filePath + "/$fileName";

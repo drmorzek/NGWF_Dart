@@ -6,17 +6,19 @@ class NGWFDirective {
   dynamic G;
   String name;
   var component;
-  Function func;
+  Map nodes = new Map();
 
-  NGWFDirective({this.name, this.func}) {}
+  NGWFDirective({this.name}) {
+    this.nodes = {};
+  }
 
   setName(name) {
     this.name = name;
     return this;
   }
 
-  setFunction(func) {
-    this.func = func;
+  setComponent(component) {
+    this.component = component;
     return this;
   }
 
@@ -27,13 +29,12 @@ class NGWFDirective {
 
   setup() {}
 
-  install() {
-    this.setup();
-      
-    querySelectorAll('[${this.name}]').forEach((node) {
-      var arg = node.attributes[this.name];
-      if (this.func != null) this.func(arg, node, this.G);
+  install() async {
+    await querySelectorAll('[${this.name}]').forEach((e) {
+      this.nodes[e] = e.attributes[this.name];
     });
+
+    this.setup();
 
     return this;
   }

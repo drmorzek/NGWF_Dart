@@ -18,16 +18,19 @@ class NGWFstart {
   Map plugins = new Map();
   Map directives = new Map();
   EventEmitter event;
+  var router;
   Map P = new Map();
 
   NGWFstart({
     List components,
     List plugins,
     List directives,
+    router,
   }) {
     if (components != null) this.setComponents(components);
     if (plugins != null) this.setPlugins(plugins);
     if (directives != null) this.setDirectives(directives);
+    if (router != null) this.setDirectives(router);
     this.event = EventEmitter();
   }
 
@@ -37,10 +40,11 @@ class NGWFstart {
   }
 
   setComponents(List components) {
-    if (components != null)
+    if (components != null) {
       components.forEach((element) {
         this.components[element.runtimeType] = element;
       });
+    }
     return this;
   }
 
@@ -65,6 +69,11 @@ class NGWFstart {
     return this;
   }
 
+  setRouter(router) {
+    this.router = router;
+    return this;
+  }
+
   set1stComponent(component1) {
     this.components["start-conponent"] = component1;
     return this;
@@ -74,7 +83,7 @@ class NGWFstart {
     setDirectives(GlobalDirectives());
   }
 
-  _init1stcomponent() async {
+  Future _init1stcomponent() async {
     if (this.components["start-component"] != null) {
       var component = this.components["start-component"]();
       component.setPlugins(this.P);
@@ -86,7 +95,7 @@ class NGWFstart {
     this._init();
 
     document.addEventListener('DOMContentLoaded', (event) {
-      window.location.href = this.startlocation ?? "#";
+      window.location.href = this.startlocation ?? "#/";
     });
 
     this.plugins.forEach((_, pl) async {
@@ -94,18 +103,31 @@ class NGWFstart {
       this.P[plugin.name] = plugin.setCtx(this).install();
     });
 
-    this._init1stcomponent();
-    this.components.forEach((key, c) async {
-      if (key == "start-component") return;
-      var component = c();
-      component.setPlugins(this.P);
-      await component.setCtx(this).render();
+    this._init1stcomponent().then((_) {
+
+      this.components.forEach((key, c) async {
+        if (key == "start-component") return;
+        var component = c();
+        component.setPlugins(this.P);
+        await component.setCtx(this).render();
+      });
+
+    }).then((_) {
+
+      if (this.router != null) {
+        this.router.setCtx(this).init();
+        window.addEventListener('popstate', (event) async {
+          this.router.setCtx(this).init();
+        });
+      }
+
     });
 
+
     this.event.on('renderpage', (dynamic component) {
-      this.directives.forEach((_, d) async {
+      this.directives.forEach((_, d) {
         var directive = d();
-        await directive.setCtx(this).install();
+        directive.setComponent(component).setCtx(this).install();
       });
     });
   }

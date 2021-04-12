@@ -1,7 +1,7 @@
 var NavbarTemplate = """
   <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
-        <a class="navbar-item" href="#">
+        <a class="navbar-item" router-link="/">
           <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
         </a>
 
@@ -14,7 +14,7 @@ var NavbarTemplate = """
 
       <div id="navbarBasicExample" class="navbar-end">
         <div class="navbar-start">
-          <a class="navbar-item" router-link="#" >
+          <a class="navbar-item" router-link="/" >
             Home
           </a>
 
@@ -22,7 +22,7 @@ var NavbarTemplate = """
             Input
           </a>
 
-          <a class="navbar-item" router-link="/directive" >
+          <a class="navbar-item" router-link="/directive">
               Directive
           </a>
         </div>
