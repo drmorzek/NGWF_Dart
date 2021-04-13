@@ -7,7 +7,6 @@ import 'directive.template.dart';
 class DirectiveComponent extends NGWFComponent {
   DirectiveComponent() : super(tag: 'directive');
   setup() {
-    print(route.params);
     template = directivetemplate;
   }
 }

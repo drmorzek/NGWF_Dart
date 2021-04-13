@@ -31,9 +31,12 @@ class _HmodelParent {
   _AppendNode(String selector, newnode, {bool clean}) {
     this._selector = selector;
     var node = querySelector(this._selector);
+
     var clone = newnode;
+    // if (clean) node.remove();
     if (clean) node.innerHtml = '';
     node.append(clone);
+    clone.remove();
     return this;
   }
 

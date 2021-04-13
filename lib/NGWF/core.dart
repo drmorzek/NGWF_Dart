@@ -104,30 +104,26 @@ class NGWFstart {
     });
 
     this._init1stcomponent().then((_) {
-
       this.components.forEach((key, c) async {
         if (key == "start-component") return;
         var component = c();
         component.setPlugins(this.P);
         await component.setCtx(this).render();
       });
-
     }).then((_) {
-
       if (this.router != null) {
         this.router.setCtx(this).init();
         window.addEventListener('popstate', (event) async {
           this.router.setCtx(this).init();
         });
       }
-
     });
-
 
     this.event.on('renderpage', (dynamic component) {
       this.directives.forEach((_, d) {
+        
         var directive = d();
-        directive.setComponent(component).setCtx(this).install();
+        directive.setCtx(this).install();
       });
     });
   }

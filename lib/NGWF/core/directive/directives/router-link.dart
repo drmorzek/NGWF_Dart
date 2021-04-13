@@ -4,9 +4,14 @@ import '../directive-init.dart';
 
 class RouterLinkDirective extends NGWFDirective {
   RouterLinkDirective() : super(name: 'router-link');
-  setup() {
-    nodes.forEach((key, value) {
-      key.on["click"].listen((event) => window.location.href = "#$value");
+
+  @override
+  func({node, component, arg, name, global}) {
+    node.on["click"].listen((event) {
+        if(window.location.hash != "#$arg") {
+          window.location.hash = "#$arg";
+        }
+
     });
   }
 }

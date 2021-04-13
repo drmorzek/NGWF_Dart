@@ -45,13 +45,13 @@ class NGWFComponent {
   setStyles(styles) {
     this.styles = styles ?? "";
     this._stylesnode = querySelector("style[name='${this.tag}']");
-    if(this._stylesnode == null) {
+    if (this._stylesnode == null) {
       H
-        .node(H.h(
-            tag: "style",
-            params: {"type": "text/css", "name": tag},
-            child: [this.styles]))
-        .Append("head");
+          .node(H.h(
+              tag: "style",
+              params: {"type": "text/css", "name": tag},
+              child: [this.styles]))
+          .Append("head");
     }
     return this;
   }
@@ -107,15 +107,11 @@ class NGWFComponent {
   _init() {
     if (this.name != null) this._subscribeProps(this.name);
     this._subscribeProps(this.runtimeType);
-
-    
-    window.addEventListener('popstate', (event) async {
-      querySelector("style[name='${this.tag}']");
-    });
   }
 
   render() async {
     this._init();
+    
 
     if (this.beforeMount != null) await this.beforeMount();
 
@@ -124,6 +120,7 @@ class NGWFComponent {
     this.template = await replaceTMP(
         tmp: this.template, data: this._data, pipe: this.pipes);
 
+    H.CleanHtml(this.tag);
     await H.node(this.template).Push(this.tag);
 
     if (this._components != null) {
@@ -145,6 +142,10 @@ class NGWFComponent {
   }
 
   call() => this;
+}
+
+class _NullTreeSanitizer implements NodeTreeSanitizer {
+  void sanitizeTree(Node node) {}
 }
 
 class _RouteSettings {
