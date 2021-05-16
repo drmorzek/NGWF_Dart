@@ -27,25 +27,23 @@ class NGWFDirective {
     return this;
   }
 
-  func({ node, component, arg, name, global}) {}
+  func({node, component, arg, name}) {}
 
-  afterRunFunc() {}
-
-  install() async {
-    this.nodes = {};
-    await querySelectorAll('[${this.name}]').forEach((e) {
+  install() {
+    querySelectorAll('[${this.name}]').forEach((Element e) {
       if (this.nodes[e] != e.attributes[this.name])
         this.nodes[e] = e.attributes[this.name];
-      if (this.func != null) this.func(node: e, 
-                                      component: this.component, 
-                                      arg:e.attributes[this.name], 
-                                      name: this.name,
-                                      global: this.G);
+      if (this.func != null) {
+        this.func(
+          node: e,
+          component: this.component,
+          arg: e.attributes[this.name],
+          name: this.name,
+        );
+      }
     });
 
-    this.afterRunFunc();
-
-    return this;
+    // return this;
   }
 
   call() => this;

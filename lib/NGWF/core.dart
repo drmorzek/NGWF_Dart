@@ -30,7 +30,7 @@ class NGWFstart {
     if (components != null) this.setComponents(components);
     if (plugins != null) this.setPlugins(plugins);
     if (directives != null) this.setDirectives(directives);
-    if (router != null) this.setDirectives(router);
+    if (router != null) this.setRouter(router);
     this.event = EventEmitter();
   }
 
@@ -121,7 +121,6 @@ class NGWFstart {
 
     this.event.on('renderpage', (dynamic component) {
       this.directives.forEach((_, d) {
-        
         var directive = d();
         directive.setCtx(this).install();
       });
