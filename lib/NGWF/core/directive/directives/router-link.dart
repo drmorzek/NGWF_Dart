@@ -1,6 +1,5 @@
 import 'dart:html';
 
-import '../../../core.dart';
 import '../directive-init.dart';
 
 class RouterLinkDirective extends NGWFDirective {
