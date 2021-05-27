@@ -1,4 +1,4 @@
-import 'package:NGWF/NGWF/core.dart';
+import 'package:NGWF/core.dart';
 
 class TestPlugin2 extends NGWFPlugin {
   Map store = new Map();

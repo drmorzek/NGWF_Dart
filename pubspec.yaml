@@ -1,5 +1,5 @@
-name: NGWF
-description: Super-Puper-Mega-Web-Framework (Angular mini-clone).
+name: NGWFSPA
+description: testSPA with NGWF
 version: 0.0.1
 #homepage: https://www.example.com
 
@@ -11,13 +11,14 @@ scripts:
     - rd /S /Q build
     - dart  html2dart.dart
     - webdev build
-    - terser build/main.dart.js -c toplevel -m --safari10 --ie8 -f wrap_func_args  -o build/main.dart.js
     - echo "Build completed"
 
 environment:
   sdk: '>=2.10.0 <3.0.0'
 
-#dependencies:
+dependencies:
+  NGWF:
+    path: ./pkg/NGWF
 #  path: ^1.7.0
 
 dev_dependencies:

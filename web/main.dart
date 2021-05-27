@@ -1,11 +1,11 @@
 
 
-import 'package:NGWF/NGWF/core.dart';
+import 'package:NGWF/core.dart';
 
-import 'app/app.component.dart';
-import 'app/app.routes.dart';
-import 'directives/test.dart';
-import 'plugins/test.dart';
+import 'package:NGWFSPA/app/app.component.dart';
+import 'package:NGWFSPA/app/app.routes.dart';
+import 'package:NGWFSPA/directives/test.dart';
+import 'package:NGWFSPA/plugins/test.dart';
 
 void main() {
   
@@ -18,3 +18,14 @@ void main() {
     .run();
     
 }
+
+// Failed to reactivate 10 packages:
+// - dcli
+// - derry
+// - devtools
+// - fvm
+// - liquidart
+// - process_run
+// - pubspec_update
+// - stagehand
+// - webdev

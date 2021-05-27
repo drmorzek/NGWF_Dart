@@ -1,4 +1,4 @@
-import 'package:NGWF/NGWF/core.dart';
+import 'package:NGWF/core.dart';
 
 import 'pages/directive/directive.component.dart';
 import 'pages/home/home.component.dart';

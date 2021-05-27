@@ -2,7 +2,7 @@ import 'dart:io';
 
 var template = (name, text) => 'var $name = """\n$text\n""";';
 main(List<String> args) async {
-  Directory dir = Directory('web/app');
+  Directory dir = Directory('lib/app');
 // execute an action on each entry
   dir.list(recursive: true).forEach((f) async {
     if (f is File) {

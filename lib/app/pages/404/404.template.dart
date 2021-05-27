@@ -1,6 +1,6 @@
 
 
-import 'package:NGWF/NGWF/core.dart';
+import 'package:NGWF/core.dart';
 
 var page404 = H.div( 
      child: [

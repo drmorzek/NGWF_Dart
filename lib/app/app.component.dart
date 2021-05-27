@@ -1,4 +1,4 @@
-import 'package:NGWF/NGWF/core.dart';
+import 'package:NGWF/core.dart';
 
 import 'app.styles.dart';
 import 'app.template.dart';

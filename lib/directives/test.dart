@@ -1,4 +1,4 @@
-import 'package:NGWF/NGWF/core.dart';
+import 'package:NGWF/core.dart';
 
 // this.func(arg, node, this.component, this.G);
 

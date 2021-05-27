@@ -1,6 +1,6 @@
 import 'dart:html';
 
-import 'package:NGWF/NGWF/core.dart';
+import 'package:NGWF/core.dart';
 
 import 'directive.template.dart';
 
