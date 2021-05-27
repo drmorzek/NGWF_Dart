@@ -6,16 +6,14 @@ version: 0.0.1
 scripts:
   serve:
     - echo "server run"
-    - webdev serve
+    - webdev serve -n unsound -- --delete-conflicting-outputs
   build:
-    - rd /S /Q build
-    - dart  html2dart.dart
-    - webdev build
+    - webdev build -n unsound -- --delete-conflicting-outputs
     # - terser build/main.dart.js -c toplevel -m --safari10 --ie8 -f wrap_func_args  -o build/main.dart.js
     - echo "Build completed"
 
 environment:
-  sdk: '>=2.10.0 <3.0.0'
+  sdk: '>=2.12.0 <3.0.0'
 
 dependencies:
   NGWF:
@@ -27,3 +25,5 @@ dev_dependencies:
   build_web_compilers: ^3.0.0
   pedantic: ^1.9.0
   sass_builder:
+  NGWF:
+    path: ./pkg/NGWF

@@ -1,3 +1,6 @@
+// @dart=2.9
+
+
 library DOM;
 
 import 'dart:html';
@@ -17,7 +20,7 @@ class DOM {
       {bool clean}) {
     var node = querySelector(selector);
     var clone = document.createRange().createContextualFragment(html);
-    if (clean) node.innerHtml = '';
+    if (clean != null) node.innerHtml = '';
     node.append(clone);
     return clone;
   }
@@ -27,7 +30,7 @@ class DOM {
   }
 
   static void RewriteHtml(String selector, String html) {
-    Element node = querySelector(selector);
+    var node = querySelector(selector);
     _RewriteNode(node, html);
   }
 

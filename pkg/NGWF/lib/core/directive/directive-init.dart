@@ -1,3 +1,6 @@
+// @dart=2.9
+
+
 import 'dart:html';
 
 // this.func(arg, node, this.component, this.G);
@@ -9,7 +12,7 @@ class NGWFDirective {
   Map nodes;
 
   NGWFDirective({this.name}) {
-    this.nodes = {};
+    nodes = {};
   }
 
   setName(name) {
@@ -23,22 +26,23 @@ class NGWFDirective {
   }
 
   setCtx(ctx) {
-    this.G = ctx;
+    G = ctx;
     return this;
   }
 
   func({node, component, arg, name}) {}
 
   install() {
-    querySelectorAll('[${this.name}]').forEach((Element e) {
-      if (this.nodes[e] != e.attributes[this.name])
-        this.nodes[e] = e.attributes[this.name];
-      if (this.func != null) {
-        this.func(
+    querySelectorAll('[$name]').forEach((Element e) {
+      if (nodes[e] != e.attributes[name]) {
+        nodes[e] = e.attributes[name];
+      }
+      if (func != null) {
+        func(
           node: e,
-          component: this.component,
-          arg: e.attributes[this.name],
-          name: this.name,
+          component: component,
+          arg: e.attributes[name],
+          name: name,
         );
       }
     });

@@ -1,3 +1,6 @@
+// @dart=2.9
+
+
 import 'dart:html';
 
 import '../../tools/H.dart';
@@ -10,13 +13,13 @@ class NGWFComponent {
   var template;
   String tag;
   String name;
-  Map _data;
+  Map<String, dynamic> _data;
   var _stylesnode;
   Map P = {};
-  Map _components = new Map();
+  final Map _components = {};
   String styles;
   Map pipes;
-  Map props = new Map();
+  Map props = {};
   EventEmitter _event;
   _RouteSettings route;
 
@@ -29,29 +32,29 @@ class NGWFComponent {
       plugins,
       styles,
       directives}) {
-    this.route = _RouteSettings();
-    this.P = plugins ?? {};
-    this._data = data;
-    this._event = EventEmitter();
-    this.setComponents(components);
-    this.setStyles(styles);
+    route = _RouteSettings();
+    P = plugins ?? {};
+    _data = data;
+    _event = EventEmitter();
+    setComponents(components);
+    setStyles(styles);
   }
 
   setCtx(ctx) {
-    this.G = ctx;
+    G = ctx;
     return this;
   }
 
   setStyles(styles) {
-    this.styles = styles ?? "";
-    this._stylesnode = querySelector("style[name='${this.tag}']");
-    if (this._stylesnode == null) {
+    this.styles = styles ?? '';
+    _stylesnode = querySelector("style[name='$tag']");
+    if (_stylesnode == null) {
       H
           .node(H.h(
-              tag: "style",
-              params: {"type": "text/css", "name": tag},
+              tag: 'style',
+              params: {'type': 'text/css', 'name': tag},
               child: [this.styles]))
-          .Append("head");
+          .Append('head');
     }
     return this;
   }
@@ -69,15 +72,16 @@ class NGWFComponent {
     this.tag = tag;
   }
 
-  setData(Map data) {
-    this._data = data;
+  setData(Map<String, dynamic> data) {
+    _data = data;
   }
 
   setComponents(List components) {
-    if (components != null)
+    if (components != null) {
       components.forEach((element) {
-        this._components[element.runtimeType] = element;
+        _components[element.runtimeType] = element;
       });
+    }
     return this;
   }
 
@@ -90,7 +94,7 @@ class NGWFComponent {
   }
 
   emitProps(name, data) {
-    this._event.emit("transport-props-between-this-and-${name}", data);
+    _event.emit('transport-props-between-this-and-$name', data);
   }
 
   beforeMount() {}
@@ -98,62 +102,62 @@ class NGWFComponent {
   afterMount() {}
 
   _subscribeProps(name) {
-    this._event.on("transport-props-between-this-and-${name}", (data) {
-      this.props = data;
+    _event.on('transport-props-between-this-and-$name', (data){
+      props = data;
       // this.render();
+      
     });
   }
 
   _init() {
-    if (this.name != null) this._subscribeProps(this.name);
-    this._subscribeProps(this.runtimeType);
+    if (name != null) _subscribeProps(name);
+    _subscribeProps(runtimeType);
   }
 
   render() async {
-    this._init();
-    
+    _init();
 
-    if (this.beforeMount != null) await this.beforeMount();
+    if (beforeMount != null) await beforeMount();
 
-    if (this.setup != null) await this.setup();
+    if (setup != null) await setup();
 
-    this.template = await replaceTMP(
-        tmp: this.template, data: this._data, pipe: this.pipes);
+    template = replaceTMP(tmp: template, data: _data, pipe: pipes);
 
-    H.CleanHtml(this.tag);
-    await H.node(this.template).Push(this.tag);
+    H.CleanHtml(tag);
+    await H.node(template).Push(tag);
 
-    if (this._components != null) {
-      this._components.forEach((_, c) async {
+    if (_components != null) {
+      _components.forEach((_, c) async {
         var component = c();
-        component.setCtx(this.G);
-        component.setPlugins(this.P);
+        component.setCtx(G);
+        component.setPlugins(P);
         await component.render();
       });
     }
-    this.G.event.emit('renderpage', this);
+    G.event.emit('renderpage', this);
 
-    if (this.afterMount != null) await this.afterMount();
-    return this.template;
+    if (afterMount != null) await afterMount();
+    return template;
   }
 
   setPlugins(plugins) {
-    this.P = plugins == null ? {...this.P} : {...this.P, ...plugins};
+    P = plugins == null ? {...P} : {...P, ...plugins};
   }
 
   call() => this;
 }
 
 class _NullTreeSanitizer implements NodeTreeSanitizer {
+  @override
   void sanitizeTree(Node node) {}
 }
 
 class _RouteSettings {
   Map params;
 
-  _RouteSettings() {}
+  _RouteSettings();
 
   go(url) {
-    window.location.href = "#$url";
+    window.location.href = '#$url';
   }
 }

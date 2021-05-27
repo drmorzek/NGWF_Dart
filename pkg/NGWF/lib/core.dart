@@ -1,3 +1,6 @@
+// @dart=2.9
+
+
 export './tools/EventEmitter.dart';
 export './tools/H.dart';
 export './tools/DOM.dart';
@@ -13,29 +16,29 @@ import 'core/directive/directives.dart';
 import 'tools/EventEmitter.dart';
 
 class NGWFstart {
-  Map components = new Map();
+  Map components = {};
   String startlocation;
-  Map plugins = new Map();
-  Map directives = new Map();
+  Map plugins = {};
+  Map directives = {};
   EventEmitter event;
   var router;
-  Map P = new Map();
+  Map P = {};
 
   NGWFstart({
     List components,
     List plugins,
     List directives,
-    router,
+    var router,
   }) {
-    if (components != null) this.setComponents(components);
-    if (plugins != null) this.setPlugins(plugins);
-    if (directives != null) this.setDirectives(directives);
-    if (router != null) this.setRouter(router);
-    this.event = EventEmitter();
+    if (components != null) setComponents(components);
+    if (plugins != null) setPlugins(plugins);
+    if (directives != null) setDirectives(directives);
+    if (router != null) setRouter(router);
+    event = EventEmitter();
   }
 
   static create() {
-    NGWFstart ngwf = NGWFstart();
+    var ngwf = NGWFstart();
     return ngwf;
   }
 
@@ -49,23 +52,25 @@ class NGWFstart {
   }
 
   setDirectives(List directives) {
-    if (directives != null)
+    if (directives != null) {
       directives.forEach((element) {
         this.directives[element.runtimeType] = element;
       });
+    }
     return this;
   }
 
   setPlugins(List plugins) {
-    if (plugins != null)
+    if (plugins != null) {
       plugins.forEach((element) {
         this.plugins[element.runtimeType] = element;
       });
+    }
     return this;
   }
 
   setStartLocation(url) {
-    this.startlocation = url;
+    startlocation = url;
     return this;
   }
 
@@ -75,7 +80,7 @@ class NGWFstart {
   }
 
   set1stComponent(component1) {
-    this.components["start-conponent"] = component1;
+    components['start-conponent'] = component1;
     return this;
   }
 
@@ -84,43 +89,43 @@ class NGWFstart {
   }
 
   Future _init1stcomponent() async {
-    if (this.components["start-component"] != null) {
-      var component = this.components["start-component"]();
-      component.setPlugins(this.P);
+    if (components['start-component'] != null) {
+      var component = components['start-component']();
+      component.setPlugins(P);
       await component.setCtx(this).render();
     }
   }
 
   run() {
-    this._init();
+    _init();
 
     document.addEventListener('DOMContentLoaded', (event) {
-      window.location.href = this.startlocation ?? "#/";
+      window.location.href = startlocation ?? '#/';
     });
 
-    this.plugins.forEach((_, pl) async {
+    plugins.forEach((_, pl) async {
       var plugin = pl();
-      this.P[plugin.name] = plugin.setCtx(this).install();
+      P[plugin.name] = plugin.setCtx(this).install();
     });
 
-    this._init1stcomponent().then((_) {
-      this.components.forEach((key, c) async {
-        if (key == "start-component") return;
+    _init1stcomponent().then((_) {
+      components.forEach((key, c) async {
+        if (key == 'start-component') return;
         var component = c();
-        component.setPlugins(this.P);
+        component.setPlugins(P);
         await component.setCtx(this).render();
       });
     }).then((_) {
-      if (this.router != null) {
-        this.router.setCtx(this).init();
+      if (router != null) {
+        router.setCtx(this).init();
         window.addEventListener('popstate', (event) async {
-          this.router.setCtx(this).init();
+          router.setCtx(this).init();
         });
       }
     });
 
-    this.event.on('renderpage', (dynamic component) {
-      this.directives.forEach((_, d) {
+    event.on('renderpage', (dynamic component) {
+      directives.forEach((_, d) {
         var directive = d();
         directive.setCtx(this).install();
       });

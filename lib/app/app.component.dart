@@ -9,8 +9,8 @@ class AppComponent extends NGWFComponent {
   AppComponent()
       : super(
             tag: 'app-root',
-            template: apptemplate,
+            template: AppTemplate,
             components: [NavbarComponent()],
-            styles: appstyles
+            styles: AppStyles
       );
 }

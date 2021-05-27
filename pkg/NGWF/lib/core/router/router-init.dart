@@ -1,3 +1,4 @@
+// @dart=2.9
 
 import 'dart:html';
 
@@ -8,14 +9,14 @@ class NGWFRouter {
   Map routes;
   String tag;
 
-  NGWFRouter({this.tag, this.routes}) {}
+  NGWFRouter({this.tag, this.routes});
 
   setTag(tag) {
     this.tag = tag;
   }
 
   setCtx(ctx) {
-    this.G = ctx;
+    G = ctx;
     return this;
   }
 
@@ -26,56 +27,56 @@ class NGWFRouter {
   setup() {}
 
   init() async {
-    await this.setup();
+    await setup();
     var hash = window.location.hash;
     // hashss(hash);
-    hash = hash.length != 0 ? hash.substring(1, hash.length) : "#/";
+    hash = hash.isNotEmpty ? hash.substring(1, hash.length) : '#/';
 
-    List routepaths = [
-      ...this.routes.keys.toList(),
+    var routepaths = [
+      ...routes.keys.toList(),
     ];
 
-    Map params = new Map();
+    var params = {};
     dynamic check = routepaths
-        .where((element) => element != "**")
-        .where((path) => _checklocpath("#" + path, window.location.hash));
+        .where((element) => element != '**')
+        .where((path) => _checklocpath('#' + path, window.location.hash));
     
 
     var routerpath;
     if (check.isNotEmpty) {
-      params = await _getParams("#" + check.first, window.location.hash);
+      params = _getParams('#' + check.first, window.location.hash);
       routerpath = check.first;
     } else {
-      routerpath = "**";
+      routerpath = '**';
     }
 
 
-    if (this.routes[routerpath] != null) {
-      var component = this.routes[routerpath]();
+    if (routes[routerpath] != null) {
+      var component = routes[routerpath]();
       component.route.params = params;
-      component.setCtx(this.G);
-      component.setTag(this.tag);
+      component.setCtx(G);
+      component.setTag(tag);
       await component.render();
     } else {
-      H.CleanHtml(this.tag);
+      H.CleanHtml(tag);
     }
   }
 }
 
 var _pathToRegex = (path) {
-  var temp = "^" +
+  var temp = '^' +
       path
-          .replaceAll(RegExp(r"\/"), '\\/')
-          .replaceAll(RegExp(r":\w+"), "(.+?)") +
-      r"$";
+          .replaceAll(RegExp(r'\/'), '\\/')
+          .replaceAll(RegExp(r':\w+'), '(.+?)') +
+      r'$';
   return RegExp(temp);
 };
 
 bool _checklocpath(String routepath, String locationpathname) {
   var reg = _pathToRegex(routepath);
   if (!reg.hasMatch(locationpathname)) return false;
-  var countroute = routepath.split("/");
-  var countlocation = locationpathname.split("/");
+  var countroute = routepath.split('/');
+  var countlocation = locationpathname.split('/');
   if (countroute.length != countlocation.length) return false;
   return true;
 }
@@ -85,9 +86,9 @@ var _getParams = (routepath, locationpathname) {
   var matches = reg.firstMatch(locationpathname);
   var list = List<String>.generate(
       matches.groupCount, (index) => matches.group(index + 1));
-  var values = list.map((e) => e.split("/")[0]).toList();
+  var values = list.map((e) => e.split('/')[0]).toList();
 
-  RegExp exp2 = RegExp(r":(\w+)");
+  var exp2 = RegExp(r':(\w+)');
   var matches2 = exp2.allMatches(routepath);
   var keys =
       matches2.map((e) => routepath.substring(e.start + 1, e.end)).toList();

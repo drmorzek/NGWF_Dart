@@ -1,4 +1,4 @@
-
+// @dart=2.9
 
 import 'package:NGWF/core.dart';
 
@@ -15,6 +15,5 @@ void main() {
     .setDirectives([TestDirective()])
     .setPlugins([TestPlugin2()])
     .set1stComponent(AppComponent())
-    .run();
-    
+    .run();    
 }

@@ -1,9 +1,12 @@
+// @dart=2.9
+
+
 library IdGen;
 
 import 'dart:math';
 
 String IdGen({int length = 10}) {
-  Random _rnd = Random();
+  var _rnd = Random();
   var _chars =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 

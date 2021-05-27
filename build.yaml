@@ -1,10 +1,16 @@
 targets:
   $default:
     builders:
+      NGWF:htmlcssBuilder:
+        generate_for:
+          - lib/app/**.html
+          - lib/app/**.css
       sass_builder:
         release_options:
           outputStyle: compressed
       build_web_compilers:entrypoint:
+        generate_for:
+          - web/**.dart
         options:
           compiler: dart2js
         dev_options:
@@ -15,4 +21,4 @@ targets:
           dart2js_args:
           - --minify
           - -O4
-          - --no-source-maps
+          - --no-source-maps 

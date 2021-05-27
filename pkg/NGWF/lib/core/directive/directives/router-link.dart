@@ -7,16 +7,17 @@ class RouterLinkDirective extends NGWFDirective {
 
   var routerLinkListener = {};
 
+  @override
   func({node, component, arg, name}) {
 
     void eventToHash(_) {
-      if (window.location.hash != "#$arg") {
-        window.location.hash = "#$arg";
+      if (window.location.hash != '#$arg') {
+        window.location.hash = '#$arg';
       }
     }
 
-    if(this.routerLinkListener[node.hashCode] == null) {
-      this.routerLinkListener[node.hashCode] = node.on['click'].listen(eventToHash);
+    if(routerLinkListener[node.hashCode] == null) {
+      routerLinkListener[node.hashCode] = node.on['click'].listen(eventToHash);
     }
   }
 }

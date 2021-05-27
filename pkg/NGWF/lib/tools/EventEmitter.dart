@@ -1,13 +1,16 @@
+// @dart=2.9
+
+
 library EventEmitter;
 
-typedef void RemoveListener();
+typedef RemoveListener = void Function();
 
 abstract class __EventEmitter__ {
   Map<String, List<Function>> events;
 
-  RemoveListener on(String event, Function handler([dynamic data]));
+  RemoveListener on(String event, Function Function([dynamic data]) handler);
 
-  void once(String event, Function handler([dynamic data]));
+  void once(String event, Function Function([dynamic data]) handler);
 
   void off(String event);
 
@@ -18,16 +21,16 @@ abstract class __EventEmitter__ {
 
 class EventEmitter extends __EventEmitter__ {
 
-  Map<String, List<Function>> _events = new Map();
+  final Map<String, List<Function>> _events = {};
 
   @override
   Map<String, List<Function>> get events => _events;
 
-  EventEmitter() {
-  }
+  EventEmitter();
 
-  RemoveListener on(String event, Function handler(dynamic data)) {
-    final List eventContainer = _events.putIfAbsent(event, () => new List<Function>());
+  @override
+  RemoveListener on(String event, Function Function(dynamic data) handler) {
+    final List eventContainer = _events.putIfAbsent(event, () => <Function>[]);
     eventContainer.add(handler);
     void offThisListener() {
       eventContainer.remove(handler);
@@ -35,20 +38,23 @@ class EventEmitter extends __EventEmitter__ {
     return offThisListener;
   }
 
-  void once(String event, void handler(dynamic data)) {
-    final List eventContainer = _events.putIfAbsent(event, () => new List<Function>());
+  @override
+  void once(String event, void Function(dynamic data) handler) {
+    final List eventContainer = _events.putIfAbsent(event, () => <Function>[]);
     eventContainer.add((dynamic data) {
       handler(data);
-      this.off(event);
+      off(event);
     });
   }
 
+  @override
   void off(String event) {
     _events.remove(event);
   }
 
+  @override
   void emit(String event, [dynamic data]) {
-    final List eventContainer = _events[event] ?? [];
+    final eventContainer = _events[event] ?? [];
     eventContainer.forEach((handler) {
       if (handler is Function) handler(data);
     });

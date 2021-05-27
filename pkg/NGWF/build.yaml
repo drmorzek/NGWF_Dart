@@ -1,0 +1,19 @@
+targets:
+  $default:
+    builders:
+      NGWF:htmlcssBuilder:
+        enabled: true
+
+builders:
+  htmlcssBuilder:
+    import: 'package:NGWF/builder.dart'
+    builder_factories: ['htmlcssBuilder']
+    build_extensions:
+      .html:
+        - .dart
+      .css:
+        - .dart
+    # build_to: source
+    auto_apply: dependents
+    # auto_apply: root_package
+    build_to: cache

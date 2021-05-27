@@ -4,8 +4,9 @@ import 'input.template.dart';
 
 class InputComponent extends NGWFComponent {
   InputComponent() : super(tag:'app-input');
+  @override
   setup(){
 
-    this.template = inputH2;
+    template = inputH2;
   }
 }

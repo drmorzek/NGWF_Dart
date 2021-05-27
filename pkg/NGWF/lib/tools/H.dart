@@ -1,3 +1,6 @@
+// @dart=2.9
+
+
 library H;
 
 import 'dart:convert';
@@ -5,6 +8,7 @@ import 'dart:html';
 
 // element.inHtml(html, treeSanitizer: new _NullTreeSanitizer());
 class _NullTreeSanitizer implements NodeTreeSanitizer {
+  @override
   void sanitizeTree(Node node) {}
 }
 
@@ -12,25 +16,25 @@ class _HmodelParent {
   var _model;
   var _selector;
 
-  get node => this._model;
-  get selector => this._selector;
+  get node => _model;
+  get selector => _selector;
 
   _HmodelParent(model) {
     switch (model.runtimeType) {
       case Node:
-        this._model = model;
+        _model = model;
         break;
       case String:
-        this._model = document.createRange().createContextualFragment(model);
+        _model = document.createRange().createContextualFragment(model);
         break;
       default:
-        throw Exception("$model is not instanse of Node or String");
+        throw Exception('$model is not instanse of Node or String');
     }
   }
 
   _AppendNode(String selector, newnode, {bool clean}) {
-    this._selector = selector;
-    var node = querySelector(this._selector);
+    _selector = selector;
+    var node = querySelector(_selector);
 
     var clone = newnode;
     // if (clean) node.remove();
@@ -47,19 +51,19 @@ class _HmodelParent {
   }
 
   Push(String selector) {
-    this._selector = selector;
-    this._AppendNode(selector, this._model, clean: true);
+    _selector = selector;
+    _AppendNode(selector, _model, clean: true);
     return this;
   }
 
   Append(String selector) {
-    this._selector = selector;
-    this._AppendNode(selector, this._model, clean: false);
+    _selector = selector;
+    _AppendNode(selector, _model, clean: false);
     return this;
   }
 
   Rewrite(String selector, {index, bool all}) {
-    this._selector = selector;
+    _selector = selector;
 
     if (all == null || all == false) {
       var node;
@@ -81,30 +85,30 @@ class _HmodelParent {
       } else {
         node = querySelector(selector);
       }
-      this._RewriteNode(node, this._model);
+      _RewriteNode(node, _model);
     } else {
-      this.RewriteAll(selector);
+      RewriteAll(selector);
     }
 
     return this;
   }
 
   Clean() {
-    querySelector(this.selector).remove();
+    querySelector(selector).remove();
     return this;
   }
 
   Remove() {
-    this._model.remove();
+    _model.remove();
     return this;
   }
 
   RewriteAll(String selector) {
-    this._selector = selector;
-    var node = querySelectorAll(this._selector);
+    _selector = selector;
+    var node = querySelectorAll(_selector);
 
     node.forEach((element) {
-      this._RewriteNode(element, this._model);
+      _RewriteNode(element, _model);
     });
     return this;
   }
@@ -118,7 +122,7 @@ class H {
   }
 
   static RemoveNode(String selector) {
-    querySelector(selector).remove();
+    querySelector(selector)?.remove();
   }
 
   static _HmodelParent node(model) {
@@ -134,7 +138,7 @@ class H {
       List classes,
       String id}) {
     String _params(Map<dynamic, dynamic> p) {
-      String out = '';
+      var out = '';
       p.forEach((key, value) {
         if (key == 'style' || key == 'class' || key == 'id') return;
         out += ' $key="$value"';
@@ -143,7 +147,7 @@ class H {
     }
 
     String _styles(Map<dynamic, dynamic> p) {
-      String out = ' style="';
+      var out = ' style="';
       p.forEach((key, value) {
         out += ' $key:$value;';
       });
@@ -151,7 +155,7 @@ class H {
     }
 
     String _classes(List p) {
-      String out = ' class="';
+      var out = ' class="';
       p.forEach((value) {
         out += ' $value ';
       });
@@ -171,14 +175,14 @@ class H {
     }
     ;
 
-    var tpl = new StringBuffer("<$tag$attr>$components</$tag>");
+    var tpl = StringBuffer("<$tag$attr>$components</$tag>");
 
     return tpl.toString();
   }
 
   static div({Map params, List child, Map styles, List classes, String id}) {
     return H.h(
-        tag: "div",
+        tag: 'div',
         params: params,
         child: child,
         styles: styles,
@@ -192,16 +196,16 @@ class H {
     Map styles,
     List classes,
     String id,
-    String type = "text",
-    String name = "",
-    String value = "",
+    String type = 'text',
+    String name = '',
+    String value = '',
   }) {
-    var newparams = params != null ? params : {};
-    newparams["type"] = type;
-    newparams["name"] = name;
-    newparams["value"] = value;
+    var newparams = params ?? {};
+    newparams['type'] = type;
+    newparams['name'] = name;
+    newparams['value'] = value;
     return H.h(
-        tag: "input",
+        tag: 'input',
         params: newparams,
         child: child,
         styles: styles,
@@ -215,12 +219,12 @@ class H {
     Map styles,
     List classes,
     String id,
-    String type = "button",
+    String type = 'button',
   }) {
-    var newparams = params != null ? params : {};
-    newparams["type"] = type;
+    var newparams = params ?? {};
+    newparams['type'] = type;
     return H.h(
-        tag: "button",
+        tag: 'button',
         params: newparams,
         child: child,
         styles: styles,
@@ -234,9 +238,9 @@ class H {
       Map styles,
       List classes,
       String id,
-      String type = "text"}) {
+      String type = 'text'}) {
     return H.h(
-        tag: "p",
+        tag: 'p',
         params: params,
         child: child,
         styles: styles,
@@ -245,15 +249,15 @@ class H {
   }
 
   static hr() {
-    return H.h(tag: "hr");
+    return H.h(tag: 'hr');
   }
 
   static br() {
-    return H.h(tag: "br");
+    return H.h(tag: 'br');
   }
 
   static pre({List child}) {
-    return H.h(tag: "pre", child: child);
+    return H.h(tag: 'pre', child: child);
   }
 
   static tag(String tag, List child) {
@@ -275,6 +279,6 @@ class H {
         styles: styles,
         id: id,
         child: child,
-        tag: "span");
+        tag: 'span');
   }
 }

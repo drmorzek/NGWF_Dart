@@ -1,3 +1,6 @@
+// @dart=2.9
+
+
 export 'component/component-init.dart';
 export 'router/router-init.dart';
 export 'plugin/plugin-init.dart';

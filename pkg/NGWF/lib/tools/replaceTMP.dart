@@ -1,3 +1,6 @@
+// @dart=2.9
+
+
 library replaceTMP;
 
 // void main(List<String> args) {
@@ -25,15 +28,15 @@ library replaceTMP;
 
 String replaceTMP({String tmp = '', Map<String, dynamic> data , Map pipe}) {
   if (tmp == '' || data == null) return tmp;
-  RegExp exp = RegExp(r"{{(.*?)}}");
+  var exp = RegExp(r'{{(.*?)}}');
   var matches = exp.allMatches(tmp);
   if (matches.isEmpty) return tmp;
   var newstr = tmp;
   matches.forEach((key) {
     var substr = tmp.substring(key.start, key.end);
     var findfuncs = substr
-        .replaceAll("{{", "")
-        .replaceAll("}}", "")
+        .replaceAll('{{', '')
+        .replaceAll('}}', '')
         .trim()
         .split('|')
         .map((e) => e.toString().trim())
@@ -43,7 +46,7 @@ String replaceTMP({String tmp = '', Map<String, dynamic> data , Map pipe}) {
     if (data != null && data[findkey] != null) {
       if (pipe != null) {
         findfuncs.forEach((findfunc) {
-          var findargsfunc = findfunc.split(":");
+          var findargsfunc = findfunc.split(':');
           var func = findargsfunc.removeAt(0);
 
           if (pipe[func] != null) {
