@@ -14,4 +14,3 @@ class AppComponent extends NGWFComponent {
             styles: appstyles
       );
 }
-

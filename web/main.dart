@@ -18,14 +18,3 @@ void main() {
     .run();
     
 }
-
-// Failed to reactivate 10 packages:
-// - dcli
-// - derry
-// - devtools
-// - fvm
-// - liquidart
-// - process_run
-// - pubspec_update
-// - stagehand
-// - webdev
